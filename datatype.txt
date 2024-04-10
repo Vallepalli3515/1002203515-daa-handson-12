@@ -1,0 +1,66 @@
+#include <iostream>
+
+class DynamicIntArray {
+private:
+    int* elements;
+    int size;
+    int capacity;
+
+public:
+    // Constructor
+    DynamicIntArray() {
+        size = 0;
+        capacity = 5; // Initial capacity set to 5
+        elements = new int[capacity];
+    }
+
+    // Destructor
+    ~DynamicIntArray() {
+        delete[] elements;
+    }
+
+    // Function to add element to the end of the array
+    void append(int element) {
+        if (size == capacity) {
+            int* temp = new int[2 * capacity];
+            for (int i = 0; i < size; ++i) {
+                temp[i] = elements[i];
+            }
+            delete[] elements;
+            elements = temp;
+            capacity *= 2;
+        }
+        elements[size++] = element;
+    }
+
+    // Function to get element at index
+    int getElementAt(int index) {
+        if (index < 0 || index >= size) {
+            std::cerr << "Index out of bounds" << std::endl;
+            return -1; // or throw an exception
+        }
+        return elements[index];
+    }
+
+    // Function to get the size of the array
+    int getSize() {
+        return size;
+    }
+};
+
+int main() {
+    DynamicIntArray arr;
+    
+    // Adding elements to the array
+    for (int i = 1; i <= 10; ++i) {
+        arr.append(i * 2); // Multiplying index by 2 for different values
+    }
+
+    // Accessing elements
+    for (int i = 0; i < arr.getSize(); ++i) {
+        std::cout << arr.getElementAt(i) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
